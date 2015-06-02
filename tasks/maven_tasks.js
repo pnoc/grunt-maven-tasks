@@ -28,6 +28,9 @@ module.exports = function(grunt) {
 
     options.goal = options.goal || this.target;
     options.commitPrefix = options.commitPrefix || '%s';
+    options.mvnCommand = options.mvnCommand || 'mvn';
+
+    grunt.log.debug('mvnCommand = '+ options.mvnCommand);
 
     var pkg = grunt.file.readJSON(options.versionFile || 'package.json');
 
@@ -179,8 +182,8 @@ module.exports = function(grunt) {
     var done = this.async();
     var msg = 'Installing to maven...';
     grunt.verbose.write(msg);
-    grunt.log.debug('Running command "mvn ' + args.join(' ') + '"');
-    grunt.util.spawn({ cmd: 'mvn', args: args, opts: {stdio: 'inherit'} }, function(err, result, code) {
+    grunt.log.debug('Running command "'+ options.mvnCommand + ' ' + args.join(' ') + '"');
+    grunt.util.spawn({ cmd: options.mvnCommand, args: args, opts: {stdio: 'inherit'} }, function(err, result, code) {
       if (err) {
         grunt.verbose.or.write(msg);
         grunt.log.error().error('Failed to install to maven');
@@ -228,8 +231,8 @@ module.exports = function(grunt) {
     var done = this.async();
     var msg = 'Deploying to maven...';
     grunt.verbose.write(msg);
-    grunt.log.debug('Running command "mvn ' + args.join(' ') + '"');
-    grunt.util.spawn({ cmd: 'mvn', args: args, opts: {stdio: 'inherit'} }, function(err, result, code) {
+    grunt.log.debug('Running command "' + options.mvnCommand + ' ' + args.join(' ') + '"');
+    grunt.util.spawn({ cmd: options.mvnCommand, args: args, opts: {stdio: 'inherit'} }, function(err, result, code) {
       if (err) {
         grunt.verbose.or.write(msg);
         grunt.log.error().error('Failed to deploy to maven');
